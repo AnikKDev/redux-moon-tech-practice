@@ -1,15 +1,26 @@
 import React, { createContext, useContext, useEffect, useState } from "react";
 import axios from "axios";
+import { useReducer } from "react";
+import {
+  initialState,
+  productReducer,
+} from "../state/ProductState/productReducer";
+import { actionTypes } from "../state/ProductState/actionTypes";
 const PRODUCT_CONTEXT = createContext();
 
 const ProductProvider = ({ children }) => {
-  const [data, setData] = useState([]);
+  // declaring initial reducer state
+  const [state, dispatch] = useReducer(productReducer, initialState);
+
+  // const [data, setData] = useState([]);
   useEffect(() => {
     const getData = async () => {
       try {
+        dispatch({ type: actionTypes.FETCHING_START });
         const { data } = await axios.get("http://localhost:5000/products");
-        setData(data.data);
+        dispatch({ type: actionTypes.FETCHING_SUCCESS, payload: data.data });
       } catch (err) {
+        dispatch({ type: actionTypes.FETCHING_ERROR });
         console.log(err);
       }
     };
@@ -18,7 +29,8 @@ const ProductProvider = ({ children }) => {
 
   // data
   const value = {
-    data,
+    state,
+    dispatch,
   };
   console.log(value);
   return (
