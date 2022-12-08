@@ -5,6 +5,7 @@ export const initialState = {
   loading: false, // a boolean value
   products: [], // an array of objects
   error: false, //if there is an error
+  cart: [], // an empty cart array to hold cart objects
 };
 export const productReducer = (state, action) => {
   switch (action.type) {
@@ -26,6 +27,11 @@ export const productReducer = (state, action) => {
         ...state,
         loading: false,
         error: true,
+      };
+    case actionTypes.ADD_TO_CART:
+      return {
+        ...state,
+        cart: [...state.cart, action.payload],
       };
     default:
       // always return the whole state as default.

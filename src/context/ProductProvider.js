@@ -32,7 +32,7 @@ const ProductProvider = ({ children }) => {
     state,
     dispatch,
   };
-  console.log(value);
+  console.log(state);
   return (
     <PRODUCT_CONTEXT.Provider value={value}>
       {children}
